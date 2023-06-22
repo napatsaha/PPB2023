@@ -90,7 +90,7 @@
 						<img src="media\ContinuousSAC.png">
 					</section>
 					<section>
-						<h2>Actor</h2>
+						<h3>Actor</h3>
 						<pre><code data-trim class="python" data-line-numbers="|7">
 							def actor_loss(self, states):
 								actions, log_prob, _ = self.get_action_prob(states)
@@ -104,7 +104,7 @@
 						</code></pre>
 					</section>
 					<section>
-						<h2>Critic</h2>
+						<h3>Critic</h3>
 						<pre><code data-trim class="python" data-line-numbers="8,9|14,15">
 						def critic_loss(self, states, actions, rewards, nextstates, done):
         
@@ -126,7 +126,7 @@
 						</code></pre>
 					</section>
 					<section>
-						<h2>Alpha (Temperature)</h2>
+						<h3>Alpha (Temperature)</h3>
 						<pre><code data-trim class="python" data-line-numbers="2">
 							def temperature_loss(self, log_prob):
 								loss = -(self.log_alpha * (log_prob + self.target_entropy).detach()).mean()
@@ -136,7 +136,7 @@
 				</section>
 				<section>
 					<section>
-						<h4>Discrete Actions</h4>
+						<h3>Discrete Actions</h3>
 					</section>
 					<section data-transition="fade-out">
 						<img src="media\ContinuousSAC.png">
@@ -149,31 +149,31 @@
 					<section data-auto-animate>
 						<h3>Environment Setup</h3>
 					</section>
-					<section data-auto-animate data-background-video="media\panorama-unity.mp4" data-background-video-loop=true  style="color:rgb(201, 113, 35);">
+					<section data-auto-animate data-background-video="media\panorama-unity.mp4" data-background-video-loop=true>
 						<h3>Environment Setup</h3>
 						<div class="fragment fade-in-then-out">
-							<h4 style="color:rgb(201, 113, 35)">Observation (10)</h4>
+							<h4>Observation (10)</h4>
 							<ul style="font-size: 25pt;">
 								<li>Joint Rotations (7)</li>
 								<li>Target Position (x,y,z)</li>
 							</ul>
 						</div>
 						<div class="fragment fade-in-then-out">
-							<h4 style="color:rgb(201, 113, 35)">Discrete Actions (3)</h4>
+							<h4>Discrete Actions (3)</h4>
 							<ul style="font-size: 25pt;">
 								<li>Left (0)</li>
 								<li>Stationary (1)</li>
 								<li>Right (2)</li>
 							</ul>
 						</div>
-						<div class="fragment fade-in-then-out">
-							<h4 style="color:rgb(201, 113, 35)">Reward</h4>
-							<ul style="font-size: 25pt;">
-								<li>+ Hit Target (Reset)</li>
-								<li>+ Get Closer to Target</li>
-								<li>- Collide with Table</li>
-								<li>- Body Hits Target</li>
-							</ul>
+						<div class="fragment fade-in">
+							<h4>Reward</h4>
+							<ol style="font-size: 25pt;">
+								<p>+ Hit Target (Reset)</p>
+								<p>+ Get Closer to Target</p>
+								<p>- Collide with Table</p>
+								<p>- Body Hits Target</p>
+							</ol>
 						</div>
 					</section>
 				</section>
@@ -209,6 +209,7 @@
 					</section>
 					<section data-auto-animate data-transition="zoom-in" data-background-video="media\Pendulum-discrete-102.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
 						<h3 style="color:rgba(133, 178, 183, 0.941)">Inverted Double Pendulum</h3>
+						<h4 style="color:rgba(133, 178, 183, 0.941)">Comparison</h4>
 						<p>
 							<img src="media\gym_InvertedDoublePendulum_v4_cont_disc.png">
 						</p>
@@ -281,6 +282,15 @@
 						<p>Joint 2</p>
 						<p>Joint 1</p>
 					</section>
+					<section data-auto-animate data-background-video="media\robot_subset_joint0_001.mp4" data-background-video-loop=true data-background-video-opacity=0.1>
+						<h3>Joint Subset</h3>
+						<p>Joint 5</p>
+						<p>Joint 4</p>
+						<p>Joint 3</p>
+						<p>Joint 2</p>
+						<p>Joint 1</p>
+						<p>Joint 0</p>
+					</section>
 					<section data-auto-animate>
 						<h3>Joint Subset</h3>
 						<h4>Comparison</h4>
@@ -329,6 +339,9 @@
 			Reveal.initialize({
 				hash: true,
 				slideNumber: true,
+				viewDistance: 8,
+				mobileViewDistance: 4,
+
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
 			});
