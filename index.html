@@ -16,10 +16,9 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section data-transition="none-out">
-					<h1>
-						Robot Arm Reinforcement Learning
-					</h1>
+				<section data-auto-animate>
+					<h2>Robot Arm </h2>
+					<h2>Reinforcement Learning</h2>
 					<p>
 						<small>
 							Created by Napat Sahapat
@@ -31,13 +30,12 @@
 						</small>
 					</p>
 				</section>
-				<section data-transition="none-in slide-out" 
+				<section data-auto-animate
 				data-background-transition="fade" 
 				data-background-transition-speed="slow"
 				data-background-video="media\robot_subset_joint3_101.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
-					<h1>
-						Robot Arm Reinforcement Learning
-					</h1>
+					<h2  style="color:rgb(201, 113, 35)" >Robot Arm </h2>
+					<h2  style="color:rgb(201, 113, 35)" >Reinforcement Learning</h2>
 					<p>
 						<small>
 							Created by Napat Sahapat
@@ -50,15 +48,40 @@
 					</p>
 				</section>
 				<section>
-					<section>
-						Reinforcement Learning?
+					<section data-auto-animate>
+						<h4>Reinforcement Learning?</h4>
+					</section>
+					<section data-auto-animate>
+						<h4>Reinforcement Learning?</h4>
+						<p>
+							<span>State -></span>
+							<span class="fragment">Agent -></span>
+							<span class="fragment">Action</span>
+						</p>
+					</section>
+					<section data-auto-animate>
+						<p>
+							<span>State -> Action</span>
+						</p>
+						<div class="fragment">
+							<p>Q(S,A)</p>
+							<p><small>State-Action Value</small></p>
+						</div>
+
 					</section>
 				</section>
 				<section>
-					<section>
+					<section data-auto-animate>
+						<h2>Soft Actor Critic</h2>						
+					</section>
+					<section data-auto-animate>
+						<h2>Soft Actor Critic</h2>		
+						<p><strong>Critic</strong> finds the best Q function</p>				
+					</section>
+					<section data-auto-animate>
 						<h2>Soft Actor Critic</h2>
+						<p><strong>Critic</strong> finds the best Q function</p>	
 						<p><strong>Actor</strong> evaluates current policy</p>
-						<p><strong>Critic</strong> finds the best action-value function</p>
 						<p class="fragment">Exploration is controlled by <strong>Temperature (Alpha)</strong> 
 						(Can be learned or fixed)</p>
 					</section>
@@ -82,7 +105,7 @@
 					</section>
 					<section>
 						<h2>Critic</h2>
-						<pre><code data-trim class="python" data-line-numbers="|7">
+						<pre><code data-trim class="python" data-line-numbers="8,9|14,15">
 						def critic_loss(self, states, actions, rewards, nextstates, done):
         
 							with torch.no_grad():
@@ -113,118 +136,184 @@
 				</section>
 				<section>
 					<section>
-						<h2>Continuous vs Discrete</h2>
+						<h4>Discrete Actions</h4>
 					</section>
-					<section>
+					<section data-transition="fade-out">
 						<img src="media\ContinuousSAC.png">
 					</section>
-					<section>
+					<section data-transition="fade-in">
 						<img src="media\DiscreteSAC.png">
 					</section>
 				</section>
-				<section data-background-video="media\eval_csac01_002.mp4" data-background-video-loop=true>
-					Result is very embarrassing...
+				<section>
+					<section data-auto-animate>
+						<h3>Environment Setup</h3>
+					</section>
+					<section data-auto-animate data-background-video="media\panorama-unity.mp4" data-background-video-loop=true  style="color:rgb(201, 113, 35);">
+						<h3>Environment Setup</h3>
+						<div class="fragment fade-in-then-out">
+							<h4 style="color:rgb(201, 113, 35)">Observation (10)</h4>
+							<ul style="font-size: 25pt;">
+								<li>Joint Rotations (7)</li>
+								<li>Target Position (x,y,z)</li>
+							</ul>
+						</div>
+						<div class="fragment fade-in-then-out">
+							<h4 style="color:rgb(201, 113, 35)">Discrete Actions (3)</h4>
+							<ul style="font-size: 25pt;">
+								<li>Left (0)</li>
+								<li>Stationary (1)</li>
+								<li>Right (2)</li>
+							</ul>
+						</div>
+						<div class="fragment fade-in-then-out">
+							<h4 style="color:rgb(201, 113, 35)">Reward</h4>
+							<ul style="font-size: 25pt;">
+								<li>+ Hit Target (Reset)</li>
+								<li>+ Get Closer to Target</li>
+								<li>- Collide with Table</li>
+								<li>- Body Hits Target</li>
+							</ul>
+						</div>
+					</section>
+				</section>
+				<section  style="color:rgb(117, 88, 80); margin-top: -20px;" data-background-video="media\eval_csac01_002.mp4" data-background-video-loop=true>
+					<h3>First Attempt</h3>
+					<p class="fragment">Using SAC on the Robot Arm</p>
+					<p class="fragment">Result is very embarrassing...</p>
 				</section>
 				<section>
 					<p>Let's try with simpler environments...</p>
 				</section>
 				<section>
-					<section data-background-video="media\Pendulum-continuous-04.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
-						<h2>Inverted Double Pendulum</h2>
+					<section data-auto-animate data-background-video="media\Pendulum-continuous-04.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+						<h3 style="color:rgba(133, 178, 183, 0.941)">Inverted Double Pendulum</h3>
+						<ul style="color:rgba(133, 178, 183, 0.941)" class="fragment">
+							<li>11 Observations</li>
+							<li>1 Continuous Actions</li>
+						</ul>
 					</section>
-					<section data-background-video="media\Pendulum-continuous-04.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
-						<!-- <h2>Inverted Double Pendulum</h2> -->
-						<p>Continuous SAC</p>
-						<p class="fragment fade-up">
+					<section data-auto-animate data-background-video="media\Pendulum-continuous-04.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+						<h3 style="color:rgba(133, 178, 183, 0.941)">Inverted Double Pendulum</h3>
+						<p style="color:rgba(133, 178, 183, 0.941)">Continuous SAC</p>
+						<p>
 							<img src="media\gym_InvertedDoublePendulum_v4_04_reward.png">
 						</p>
 					</section>
-					<section data-transition="slide-in fade-out" data-background-video="media\Pendulum-discrete-102.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
-						<!-- <h2>Inverted Double Pendulum</h2> -->
-						<p>Discrete SAC</p>
-						<p class="fragment fade-up">
+					<section data-auto-animate data-transition="slide-in fade-out" data-background-video="media\Pendulum-discrete-102.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+						<h3 style="color:rgba(133, 178, 183, 0.941)">Inverted Double Pendulum</h3>
+						<p style="color:rgba(133, 178, 183, 0.941)">Discrete SAC</p>
+						<p>
 							<img src="media\gym_InvertedDoublePendulum_v4_102_reward.png">
 						</p>
 					</section>
-					<section data-transition="zoom-in" data-background-video="media\Pendulum-discrete-102.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
-						<!-- <h2>Inverted Double Pendulum</h2> -->
+					<section data-auto-animate data-transition="zoom-in" data-background-video="media\Pendulum-discrete-102.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+						<h3 style="color:rgba(133, 178, 183, 0.941)">Inverted Double Pendulum</h3>
 						<p>
 							<img src="media\gym_InvertedDoublePendulum_v4_cont_disc.png">
 						</p>
 					</section>
 				</section>
 				<section>
-					<section data-background-video="media\reacher_03.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
-						<h2>Reacher</h2>
+					<section data-auto-animate data-background-video="media\reacher_03.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+						<h3 style="color:rgba(133, 178, 183, 0.941)">Reacher</h3>
+						<ul style="color:rgba(133, 178, 183, 0.941)" class="fragment">
+							<li>11 Observations</li>
+							<li>2 Continuous Actions</li>
+						</ul>
 					</section>
-					<section data-background-video="media\reacher_03.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+					<section data-auto-animate data-background-video="media\reacher_03.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+						<h3 style="color:rgba(133, 178, 183, 0.941)">Reacher</h3>
 						<p>
 							<img src="media\gym_Reacher_v4_003-103-201_reward_compare.png">
 						</p>
 					</section>
 				</section>
-				<section data-background-video="media\unity-worm.mkv" data-background-video-loop=true data-background-video-opacity=0.5>
-					<h2>Worm (Unity)</h2>
+				<section data-background-video="media\unity-worm.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+					<h3 style="color:rgba(133, 178, 183, 0.941)">Worm (Unity)</h3>
+					<ul class="fragment fade-in-then-out" style="color:rgba(133, 178, 183, 0.941)">
+						<li>64 Observations</li>
+						<li>9 Continuous Actions</li>
+					</ul>
+					<img class="fragment fade-in" src="media\unity_worm01_reward.png">
 				</section>
 				<section>
-					<section>
-						<h2>Joint Subset</h2>
+					<section data-auto-animate>
+						<h3>Joint Subset</h3>
 					</section>
-					<section data-background-video="media\robot_subset_joint5_001.mp4" data-background-video-loop=true data-background-video-opacity=0.1 data-transition="slide-in none-out">
-						<p></p>
-						<p></p>
-						<p></p>
-						<p></p>
+					<section data-auto-animate>
+						<h3>Joint Subset</h3>
+						<p>Split joints into manageable chunks</p>
+					</section>
+					<section data-auto-animate data-background-video="media\robot_subset_joint5_001.mp4" data-background-video-loop=true data-background-video-opacity=0.1>
+						<h3>Joint Subset</h3>
 						<p>Joint 5</p>
 					</section>
-					<section data-background-video="media\robot_subset_joint4_004.mp4" data-background-video-loop=true data-background-video-opacity=0.1 data-transition="none">
+					<section data-auto-animate data-background-video="media\robot_subset_joint4_004.mp4" data-background-video-loop=true data-background-video-opacity=0.1>
+						<h3>Joint Subset</h3>
 						<p></p>
 						<p></p>
 						<p></p>
 						<p>Joint 5</p>
 						<p>Joint 4</p>
 					</section>
-					<section data-background-video="media\robot_subset_joint3_101.mp4" data-background-video-loop=true data-background-video-opacity=0.1 data-transition="none">
+					<section data-auto-animate  data-background-video="media\robot_subset_joint3_101.mp4" data-background-video-loop=true data-background-video-opacity=0.1>
+						<h3>Joint Subset</h3>
 						<p></p>
 						<p></p>
 						<p>Joint 5</p>
 						<p>Joint 4</p>
 						<p>Joint 3</p>
 					</section>
-					<section data-background-video="media\robot_subset_joint2_101.mp4" data-background-video-loop=true data-background-video-opacity=0.1 data-transition="none">
+					<section data-auto-animate data-background-video="media\robot_subset_joint2_101.mp4" data-background-video-loop=true data-background-video-opacity=0.1>
+						<h3>Joint Subset</h3>
 						<p></p>
 						<p>Joint 5</p>
 						<p>Joint 4</p>
 						<p>Joint 3</p>
 						<p>Joint 2</p>
 					</section>
-					<section data-background-video="media\robot_subset_joint1_103.mp4" data-background-video-loop=true data-background-video-opacity=0.1 data-transition="none">
+					<section data-auto-animate data-background-video="media\robot_subset_joint1_103.mp4" data-background-video-loop=true data-background-video-opacity=0.1>
+						<h3>Joint Subset</h3>
 						<p>Joint 5</p>
 						<p>Joint 4</p>
 						<p>Joint 3</p>
 						<p>Joint 2</p>
 						<p>Joint 1</p>
 					</section>
+					<section data-auto-animate>
+						<h3>Joint Subset</h3>
+						<h4>Comparison</h4>
+						<img data-src="media\robot_subset_joint5-4-3-2-1-0_trial_004-005-003-010-002-001_reward.png"></img>
+					</section>
 				</section>
 				<section>
-					<img data-src="media\robot_subset_joint5-4-3-2-1-0_trial_004-005-003-010-002-001_reward.png"></img>
-				</section>
-				<section>
-					<section>
+					<section data-auto-animate>
 						<h2>Lessons</h2>
 					</section>
-					<section>
-						<span class="fragment highlight-current-red">Learning Rate</span> vs <span class="fragment highlight-green">Entropy</span>
+					<section data-auto-animate>
+						<h2>Lessons</h2>
+						<span class="fragment highlight-current-red">Learning Rate</span> vs <span class="fragment highlight-current-green">Entropy</span>
 						<p class="fragment fade-up">Early exploration is very important</p>
 					</section>
 						
 				</section>
 				<section>
-					<h2>Improvements</h2>
-					<p class="fragment">Slowly unfreezing joints</p>
+					<section data-auto-animate>
+						<h2>Improvements</h2>
+					</section>
+					<section data-auto-animate>
+						<h2>Improvements</h2>
+						<p>Slowly unfreezing joints</p>
+					</section>
+					<section data-auto-animate>
+						<h2>Improvements</h2>
+						<p>Slowly unfreezing joints (Incremental Learning)</p>
+						<p class="fragment">Reward Shaping</p>
+					</section>					
 				</section>
 				<section>
-					<h2>End</h2>
+					<h2>Thank you !</h2>
 				</section>
 			</div>
 		</div>
@@ -239,10 +328,30 @@
 			// - https://revealjs.com/config/
 			Reveal.initialize({
 				hash: true,
-
+				slideNumber: true,
 				// Learn about plugins: https://revealjs.com/plugins/
 				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
 			});
+// 			Reveal.addEventListener( 'slidechanged', function( event ) {
+//     window.setTimeout(function(){
+//         var stackedBackgrounds = $('body > div > div.backgrounds > div.stack');
+//         stackedBackgrounds.each(function(){
+//             var me = $(this);
+//             var video = me.find('video').get(0);
+//             // console.log(video);
+//             if(video){
+//                 if(me.hasClass('present')) {
+//                     // console.log('play');
+//                     video.play();
+//                 }
+//                 else {
+//                     // console.log('stop');
+//                     video.load();
+//                 }
+//             }
+//         });
+//     }, 300);
+// } );
 		</script>
 	</body>
 </html>
