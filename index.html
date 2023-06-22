@@ -4,11 +4,11 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>RobotArmRL</title>
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+		<link rel="stylesheet" href="dist/theme/sky.css">
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css">
@@ -16,8 +16,216 @@
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section data-transition="none-out">
+					<h1>
+						Robot Arm Reinforcement Learning
+					</h1>
+					<p>
+						<small>
+							Created by Napat Sahapat
+						</small>
+					</p>
+					<p>
+						<small>
+							Western Sydney University
+						</small>
+					</p>
+				</section>
+				<section data-transition="none-in slide-out" 
+				data-background-transition="fade" 
+				data-background-transition-speed="slow"
+				data-background-video="media\robot_subset_joint3_101.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+					<h1>
+						Robot Arm Reinforcement Learning
+					</h1>
+					<p>
+						<small>
+							Created by Napat Sahapat
+						</small>
+					</p>
+					<p>
+						<small>
+							Western Sydney University
+						</small>
+					</p>
+				</section>
+				<section>
+					<section>
+						Reinforcement Learning?
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Soft Actor Critic</h2>
+						<p><strong>Actor</strong> evaluates current policy</p>
+						<p><strong>Critic</strong> finds the best action-value function</p>
+						<p class="fragment">Exploration is controlled by <strong>Temperature (Alpha)</strong> 
+						(Can be learned or fixed)</p>
+					</section>
+					<section>
+						<h3>Architecture</h3>
+						<img src="media\ContinuousSAC.png">
+					</section>
+					<section>
+						<h2>Actor</h2>
+						<pre><code data-trim class="python" data-line-numbers="|7">
+							def actor_loss(self, states):
+								actions, log_prob, _ = self.get_action_prob(states)
+								q_values1 = self.critic1(torch.cat((states, actions), dim=1))
+								q_values2 = self.critic2(torch.cat((states, actions), dim=1))
+								min_q_values = torch.min(q_values1, q_values2)
+								
+								policy_loss = (self.alpha * log_prob - min_q_values).mean()
+								
+								return policy_loss, log_prob
+						</code></pre>
+					</section>
+					<section>
+						<h2>Critic</h2>
+						<pre><code data-trim class="python" data-line-numbers="|7">
+						def critic_loss(self, states, actions, rewards, nextstates, done):
+        
+							with torch.no_grad():
+								next_actions, next_log_probs, _ = self.get_action_prob(nextstates)
+								next_q1 = self.target_critic1(torch.cat((nextstates, next_actions), dim=1))
+								next_q2 = self.target_critic2(torch.cat((nextstates, next_actions), dim=1))
+								min_next_q = torch.min(next_q1, next_q2)
+								soft_state = min_next_q - self.alpha * next_log_probs
+								target_q = rewards + (1 - done) * self.gamma * soft_state
+								
+							pred_q1 = self.critic1(torch.cat((states, actions), dim=1))
+							pred_q2 = self.critic2(torch.cat((states, actions), dim=1))
+					
+							loss1 = self.criterion(pred_q1, target_q)
+							loss2 = self.criterion(pred_q2, target_q)
+					
+							return loss1, loss2
+						</code></pre>
+					</section>
+					<section>
+						<h2>Alpha (Temperature)</h2>
+						<pre><code data-trim class="python" data-line-numbers="2">
+							def temperature_loss(self, log_prob):
+								loss = -(self.log_alpha * (log_prob + self.target_entropy).detach()).mean()
+								return loss
+						</code></pre>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>Continuous vs Discrete</h2>
+					</section>
+					<section>
+						<img src="media\ContinuousSAC.png">
+					</section>
+					<section>
+						<img src="media\DiscreteSAC.png">
+					</section>
+				</section>
+				<section data-background-video="media\eval_csac01_002.mp4" data-background-video-loop=true>
+					Result is very embarrassing...
+				</section>
+				<section>
+					<p>Let's try with simpler environments...</p>
+				</section>
+				<section>
+					<section data-background-video="media\Pendulum-continuous-04.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+						<h2>Inverted Double Pendulum</h2>
+					</section>
+					<section data-background-video="media\Pendulum-continuous-04.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+						<!-- <h2>Inverted Double Pendulum</h2> -->
+						<p>Continuous SAC</p>
+						<p class="fragment fade-up">
+							<img src="media\gym_InvertedDoublePendulum_v4_04_reward.png">
+						</p>
+					</section>
+					<section data-transition="slide-in fade-out" data-background-video="media\Pendulum-discrete-102.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+						<!-- <h2>Inverted Double Pendulum</h2> -->
+						<p>Discrete SAC</p>
+						<p class="fragment fade-up">
+							<img src="media\gym_InvertedDoublePendulum_v4_102_reward.png">
+						</p>
+					</section>
+					<section data-transition="zoom-in" data-background-video="media\Pendulum-discrete-102.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+						<!-- <h2>Inverted Double Pendulum</h2> -->
+						<p>
+							<img src="media\gym_InvertedDoublePendulum_v4_cont_disc.png">
+						</p>
+					</section>
+				</section>
+				<section>
+					<section data-background-video="media\reacher_03.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+						<h2>Reacher</h2>
+					</section>
+					<section data-background-video="media\reacher_03.mp4" data-background-video-loop=true data-background-video-opacity=0.5>
+						<p>
+							<img src="media\gym_Reacher_v4_003-103-201_reward_compare.png">
+						</p>
+					</section>
+				</section>
+				<section data-background-video="media\unity-worm.mkv" data-background-video-loop=true data-background-video-opacity=0.5>
+					<h2>Worm (Unity)</h2>
+				</section>
+				<section>
+					<section>
+						<h2>Joint Subset</h2>
+					</section>
+					<section data-background-video="media\robot_subset_joint5_001.mp4" data-background-video-loop=true data-background-video-opacity=0.1 data-transition="slide-in none-out">
+						<p></p>
+						<p></p>
+						<p></p>
+						<p></p>
+						<p>Joint 5</p>
+					</section>
+					<section data-background-video="media\robot_subset_joint4_004.mp4" data-background-video-loop=true data-background-video-opacity=0.1 data-transition="none">
+						<p></p>
+						<p></p>
+						<p></p>
+						<p>Joint 5</p>
+						<p>Joint 4</p>
+					</section>
+					<section data-background-video="media\robot_subset_joint3_101.mp4" data-background-video-loop=true data-background-video-opacity=0.1 data-transition="none">
+						<p></p>
+						<p></p>
+						<p>Joint 5</p>
+						<p>Joint 4</p>
+						<p>Joint 3</p>
+					</section>
+					<section data-background-video="media\robot_subset_joint2_101.mp4" data-background-video-loop=true data-background-video-opacity=0.1 data-transition="none">
+						<p></p>
+						<p>Joint 5</p>
+						<p>Joint 4</p>
+						<p>Joint 3</p>
+						<p>Joint 2</p>
+					</section>
+					<section data-background-video="media\robot_subset_joint1_103.mp4" data-background-video-loop=true data-background-video-opacity=0.1 data-transition="none">
+						<p>Joint 5</p>
+						<p>Joint 4</p>
+						<p>Joint 3</p>
+						<p>Joint 2</p>
+						<p>Joint 1</p>
+					</section>
+				</section>
+				<section>
+					<img data-src="media\robot_subset_joint5-4-3-2-1-0_trial_004-005-003-010-002-001_reward.png"></img>
+				</section>
+				<section>
+					<section>
+						<h2>Lessons</h2>
+					</section>
+					<section>
+						<span class="fragment highlight-current-red">Learning Rate</span> vs <span class="fragment highlight-green">Entropy</span>
+						<p class="fragment fade-up">Early exploration is very important</p>
+					</section>
+						
+				</section>
+				<section>
+					<h2>Improvements</h2>
+					<p class="fragment">Slowly unfreezing joints</p>
+				</section>
+				<section>
+					<h2>End</h2>
+				</section>
 			</div>
 		</div>
 
