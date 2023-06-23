@@ -58,10 +58,11 @@
 							<span class="fragment">Agent -></span>
 							<span class="fragment">Action</span>
 						</p>
+						<p class="fragment"><strong>Reward</strong></p>
 					</section>
 					<section data-auto-animate>
 						<p>
-							<span>State -> Action</span>
+							<span>State <-> Action</span>
 						</p>
 						<div class="fragment">
 							<p>Q(S,A)</p>
@@ -139,9 +140,11 @@
 						<h3>Discrete Actions</h3>
 					</section>
 					<section data-transition="fade-out">
+						<h4>Continuous SAC</h4>
 						<img src="media\ContinuousSAC.png">
 					</section>
 					<section data-transition="fade-in">
+						<h4>Multi-Discrete SAC</h4>
 						<img src="media\DiscreteSAC.png">
 					</section>
 				</section>
@@ -168,18 +171,20 @@
 						</div>
 						<div class="fragment fade-in">
 							<h4>Reward</h4>
-							<ol style="font-size: 25pt;">
-								<p>+ Hit Target (Reset)</p>
-								<p>+ Get Closer to Target</p>
-								<p>- Collide with Table</p>
-								<p>- Body Hits Target</p>
-							</ol>
+							<ul style="font-size: 25pt;">
+								<li><strong>+</strong> Hit Target (Reset)</li>
+								<li><strong>+</strong> Get Closer to Target</li>
+								<li><strong>-</strong> Collide with Table</li>
+								<li><strong>-</strong> Body Hits Target</li>
+							</ul>
 						</div>
 					</section>
 				</section>
 				<section  style="color:rgb(117, 88, 80); margin-top: -20px;" data-background-video="media\eval_csac01_002.mp4" data-background-video-loop=true>
 					<h3>First Attempt</h3>
-					<p class="fragment">Using SAC on the Robot Arm</p>
+					<!-- <p class="fragment">Using SAC on the Robot Arm</p> -->
+					<br></br>
+					<br></br>
 					<p class="fragment">Result is very embarrassing...</p>
 				</section>
 				<section>
@@ -304,9 +309,8 @@
 					<section data-auto-animate>
 						<h2>Lessons</h2>
 						<span class="fragment highlight-current-red">Learning Rate</span> vs <span class="fragment highlight-current-green">Entropy</span>
-						<p class="fragment fade-up">Early exploration is very important</p>
-					</section>
-						
+						<p class="fragment fade-up">Early <strong class="fragment">exploration</strong> is very important</p>
+					</section>	
 				</section>
 				<section>
 					<section data-auto-animate>
@@ -314,12 +318,12 @@
 					</section>
 					<section data-auto-animate>
 						<h2>Improvements</h2>
-						<p>Slowly unfreezing joints</p>
+						<p>Slowly unfreezing joints (Incremental Learning)</p>
 					</section>
 					<section data-auto-animate>
 						<h2>Improvements</h2>
 						<p>Slowly unfreezing joints (Incremental Learning)</p>
-						<p class="fragment">Reward Shaping</p>
+						<p>Reward Shaping</p>
 					</section>					
 				</section>
 				<section>
